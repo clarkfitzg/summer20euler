@@ -13,9 +13,11 @@ Day     |   Problems |   Presenters
 June 19 |  4,9  |   Paul, Clark 
 June 26 | 12,14 |  John: 12, Shawheen & Hera: 14
 July  3 | 18,21 |  Clark & Stephen: 18, Paul: 21
-July 10 | 23,   |
+July 10 | 23,25 |   John: 23, Stephen: 25
 July 17 |       |
 July 24 |       |
+
+Queue: 27,30,31
 
 Agenda:
 
