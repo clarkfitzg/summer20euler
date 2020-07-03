@@ -16,11 +16,12 @@ julia> sort(collect(divisors(12)))
 """
 divisors = function(n)
     f = factor(n)
-    eachpower = (0:k for k in values(f))
+    primefactors = keys(f)
+    multiplicity = values(f)
+    eachpower = (0:k for k in multiplicity)
     powers = Iterators.product(eachpower...)
-    div = (prod(keys(f) .^ p) for p in powers)
-    #Iterators.flatten(div)
-    div
+    div = (prod(primefactors .^ p) for p in powers)
+    Iterators.flatten(div)
 end
 
 
@@ -62,7 +63,6 @@ amicable = function(N = 10000)
     pushfirst!(spd, 0)
     (n for n in possible if is_amicable(n, spd))
 end
-
 
 #a = collect(amicable())
 sum(amicable())
