@@ -4,6 +4,6 @@
 # has at least 1000 digits -- so take the ceiling.
 
 function fibterm(digitlength=1000)
-    ϕ = BigFloat((1 + sqrt(5))/2)
+    ϕ = (1 + sqrt(5))/2
     n = Int(ceil((digitlength - 1 + 0.5log10(5))/log10(ϕ)))
 end
