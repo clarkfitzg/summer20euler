@@ -6,8 +6,8 @@ julia> firstfib(3)
 """
 function firstfib(d=1000)
     mx = big"10"^(d-1)
-    f1 = 1
-    f2 = 1
+    f1 = big"1"
+    f2 = big"1"
     idx = 2
     while f2 < mx
         idx += 1
@@ -17,4 +17,4 @@ function firstfib(d=1000)
 end
 
 
-firstfib()
+@time firstfib()
