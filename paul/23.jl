@@ -6,7 +6,7 @@ function nonabsums()
     # Find σ(n), the sum of all divisors, for all n ≤ N.
     σvec=ones(Int,N)
     for p in primes(N)
-        pfactor = (p^2 -1) ÷ (p-1)
+        pfactor = p + 1
         pvec = pfactor*ones(Int, N÷p)
         α=2
         # By repeated addition, construct the factor of σ(n) associated
