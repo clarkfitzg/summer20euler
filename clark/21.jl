@@ -1,41 +1,6 @@
 using Primes: factor
 
-"""
-Find all divisors of n
-
-```julia-repl
-julia> sort(collect(divisors(12)))
-6-element Array{Int64,1}:
-  1
-  2
-  3
-  4
-  6
- 12
-```
-"""
-divisors = function(n)
-    f = factor(n)
-    primefactors = keys(f)
-    multiplicity = values(f)
-    eachpower = (0:k for k in multiplicity)
-    powers = Iterators.product(eachpower...)
-    div = (prod(primefactors .^ p) for p in powers)
-    Iterators.flatten(div)
-end
-
-
-"""
-Sum of the proper divisors of n
-
-```julia-repl
-julia> sum_divisors(220)
-284
-```
-"""
-sum_divisors = function(n)
-    sum(divisors(n)) - n
-end
+include("euler.jl")
 
 
 """
