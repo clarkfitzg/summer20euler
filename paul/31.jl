@@ -24,10 +24,10 @@ function coinsum(n=200)
     pathlengths[:, 1] .= 1
 	# For an even sum, need an even number of 1p coins; for an odd sum>1, need 
 	# an odd number of them. No paths ending with 2p coin if total = 1p.
-    pathlengths[:, 2] = collect(1:200) .÷ 2
+    pathlengths[:, 2] = collect(1:n) .÷ 2
 
     f(n) = max(0, n÷5 + sum([(n-5k)÷2 for k in 1:n÷5]))
-    pathlengths[:, 3] = f.(1:200)
+    pathlengths[:, 3] = f.(1:n)
     # There should be more formulas like the above, but perhaps they become
     # more complicated for higher denominations.
 
