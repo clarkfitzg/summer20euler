@@ -26,7 +26,7 @@ end
 
 
 # Arbitrary upper bound, let's hope it works 😬
-build_pairs = function(upper = 10_000)
+build_pairs = function(; upper = 10_000)
 
     # 2 cannot be in this set, since any number ending in 2 is not prime (besides 2).
     candidates = primes(3, upper)
@@ -41,9 +41,6 @@ build_pairs = function(upper = 10_000)
     d
 end
 
-
-# All of these numbers are pairs
-@time pairs = build_pairs()
 
 # This is an undirected graph, where the nodes are the primes and the edges represent the prime concatenation property.
 # The next step is to find all the fully connected subgraphs with 5 nodes.
@@ -119,7 +116,8 @@ end
 """
 Find a k clique by looking exhaustively through all possible subsets
 """
-clique = function(d, nodes, k, value = false)
+clique = function(d, nodes, k; value = false)
+    nodes = collect(nodes)
     for combo in combinations(nodes, k)
         if is_clique(combo, d)
             return value ? combo : true
@@ -130,30 +128,40 @@ end
 
 
 """
-Find a k clique.
-It might not be the smallest one.
-Mutate d by removing keys for all nodes that cannot be in a k clique.
-We'll still need to remove those keys from the value set too, but that can be another step.
+Find all the k cliques in d.
 
 Implementation Details:
 
 We could initially filter out nodes to only keep those that are connected to at least k other nodes in this set.
 That could substantially reduce the size of the problem.
 """
-find_k_clique = function(d, k = 5)
-    # We can still start with the smallest
+find_k_cliques = function(d, k = 5) # We can still start with the smallest
     allnodes = sort(collect(keys(d)))
+    result = []
     for n in allnodes
         @info n
         nodes = d[n]
         if clique(d, nodes, k-1)
+            @info success
             found = clique(d, nodes, k-1, value = true)
             push!(found, n)
-            return found
+            push!(result, found)
         end
     end
-    throw("Couldn't find a clique!")
+    result
 end
 
 
-@time find_k_clique(pairs)
+#@run find_k_clique(pairs)
+
+@time pairs = build_pairs(upper = 10_000)
+
+# Largest element is 8389.
+# Can't find any when I take upper bound less than 8000.
+@time c = find_k_cliques(pairs)
+
+# There's only one k clique here.
+# Could another have a lower sum?
+# Sure, for example just one element could be larger than 10,000, and the rest could all be small.
+# To be sure I need to check up to the sum of this...
+sum(c[1])
