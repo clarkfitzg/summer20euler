@@ -165,3 +165,7 @@ end
 # Sure, for example just one element could be larger than 10,000, and the rest could all be small.
 # To be sure I need to check up to the sum of this...
 sum(c[1])
+
+# 21.997391 seconds (889.05 M allocations: 30.351 GiB, 15.95% gc time)
+# 1-element Array{Any,1}:
+#  [8389, 5197, 5701, 6733, 13]
