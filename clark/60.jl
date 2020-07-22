@@ -1,4 +1,5 @@
 using Primes
+using Combinatorics: combinations
 
 """
 ```julia-repl
@@ -58,6 +59,13 @@ end
 # sum(map(length, values(pairs)))
 # 18176
 
+# maximum(length(x) for x in values(pairs))
+# 142
+# binomial(142, 5)
+# 448072338
+# Checking 448 million, hmmm.
+
+
 # All those that have fewer than 4 elements cannot be in this set.
 # We could keep filtering them down, but we'll still need some brute force in the end.
 # May as well write the brute force now
@@ -88,13 +96,64 @@ end
 
 
 """
+Are nodes in a clique?
+
+```julia-repl
+julia> D = Dict(1 => Set([2, 3]),
+         2 => Set([3]),
+         3 => Set([4]))
+
+julia> is_clique([1, 2, 3], D)
+true
+
+julia> is_clique([1, 2, 4], D)
+false
+```
+"""
+is_clique = function(nodes, d)
+    pairs = combinations(nodes, 2)
+    all(connected(p..., d) for p in pairs)
+end
+
+
+"""
+Find a k clique by looking exhaustively through all possible subsets
+"""
+clique = function(d, nodes, k, value = false)
+    for combo in combinations(nodes, k)
+        if is_clique(combo, d)
+            return value ? combo : true
+        end
+    end
+    false
+end
+
+
+"""
 Find a k clique.
-It doesn't need to be the smallest one.
-Mutate d by removing all nodes that cannot be in a k clique.
+It might not be the smallest one.
+Mutate d by removing keys for all nodes that cannot be in a k clique.
+We'll still need to remove those keys from the value set too, but that can be another step.
+
+Implementation Details:
+
+We could initially filter out nodes to only keep those that are connected to at least k other nodes in this set.
+That could substantially reduce the size of the problem.
 """
 find_k_clique = function(d, k = 5)
-    for n, edges in d
-        if length(edges) < k
-
+    # We can still start with the smallest
+    allnodes = sort(collect(keys(d)))
+    for n in allnodes
+        @info n
+        nodes = d[n]
+        if clique(d, nodes, k-1)
+            found = clique(d, nodes, k-1, value = true)
+            push!(found, n)
+            return found
+        end
     end
+    throw("Couldn't find a clique!")
 end
+
+
+@time find_k_clique(pairs)
