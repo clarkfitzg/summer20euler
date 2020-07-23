@@ -24,4 +24,5 @@ function exhaustive_count(coinvalue = coins, amount = amount)
 end
 
 
-@time exhaustive_count()
+# Let it run for close to an hour, and then I got tired of listening to my fan. 😖
+# @time exhaustive_count()
