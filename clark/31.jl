@@ -1,4 +1,3 @@
-
 coins = [1, 2, 5, 10, 20, 50, 100, 200]
 amount = 200
 
@@ -31,15 +30,17 @@ end
 """
 Two observations:
 1. If the value is less than 200, then we can add 1's until we get to 200.
-2. We don't need to include the max product in there- we can add it in later.
+2. We don't need to consider the cases where each coin is the same type- we can add those in later.
+
+This reduces the problem down from 6 billion cases to 6 million cases- no problem at all.
 """
-function exhaustive_count2(coinvalue = [2, 5, 10, 20, 50, 100, 200], amount = amount)
+function exhaustive_count2(coinvalue = [2, 5, 10, 20, 50, 100, 200], amount = 200)
     maxcoins = amount .÷ coinvalue
     coins_per = [0:(mx-1) for mx in maxcoins]
     count = 0
     for count_each_coin in Iterators.product(coins_per...)
         total = sum(count_each_coin .* coinvalue)
-        if total < amount
+        if total <= amount
             count += 1
         end
     end
