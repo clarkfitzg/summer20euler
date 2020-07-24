@@ -1,3 +1,5 @@
+using LinearAlgebra: ⋅
+
 coins = [1, 2, 5, 10, 20, 50, 100, 200]
 amount = 200
 
@@ -39,7 +41,9 @@ function exhaustive_count2(coinvalue = [2, 5, 10, 20, 50, 100, 200], amount = 20
     coins_per = [0:(mx-1) for mx in maxcoins]
     count = 0
     for count_each_coin in Iterators.product(coins_per...)
-        total = sum(count_each_coin .* coinvalue)
+        #total = sum(count_each_coin .* coinvalue)
+        # Wow, using the builtin dot product gives me a 3-4x speedup.
+        total = count_each_coin ⋅ coinvalue
         if total <= amount
             count += 1
         end
